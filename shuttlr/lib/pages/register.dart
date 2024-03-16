@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shuttlr/components/regin_buttons.dart';
 
-class SignIn extends StatefulWidget {
+class Register extends StatefulWidget {
   final Function toggleView;
-  const SignIn({super.key, required this.toggleView});
+  const Register({super.key, required this.toggleView});
+
   @override
-  State<SignIn> createState() => _SignInState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Flexible(
@@ -59,16 +60,16 @@ class _SignInState extends State<SignIn> {
                       children: [
                         RegInButton(
                             text: "Login",
-                            isSelected: true,
-                            buttonColor:
-                                MaterialStateProperty.all(Colors.white),
-                            toggleView: widget.toggleView),
-                        RegInButton(
-                            text: "Register",
                             isSelected: false,
                             buttonColor:
                                 MaterialStateProperty.all(Colors.transparent),
-                            toggleView: widget.toggleView)
+                            toggleView: widget.toggleView),
+                        RegInButton(
+                          text: "Register",
+                          isSelected: true,
+                          buttonColor: MaterialStateProperty.all(Colors.white),
+                          toggleView: widget.toggleView,
+                        )
                       ],
                     ),
                   )
@@ -92,7 +93,7 @@ class _SignInState extends State<SignIn> {
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Text(
-                          "Log In",
+                          "Register",
                           style: GoogleFonts.poppins(
                               fontSize: 25,
                               color: Color.fromARGB(255, 33, 219, 173)),
