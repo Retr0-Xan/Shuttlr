@@ -16,129 +16,93 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-        colors: [
-          Color.fromARGB(255, 33, 219, 173),
-          Color.fromARGB(193, 64, 228, 228),
-        ],
-        stops: [0.3, 0.9],
-      )),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Scaffold(
+      backgroundColor: Colors.grey[100],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              margin: EdgeInsets.only(top: 40),
-              width: 350,
-              height: 190,
-              decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.4),
-                  borderRadius: BorderRadius.all(Radius.circular(40))),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        "Hey There!",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 60,
-                      width: 300,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.4),
-                        borderRadius: BorderRadius.all(Radius.circular(40)),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          RegInButton(
-                              text: "Login",
-                              isSelected: false,
-                              buttonColor:
-                                  MaterialStateProperty.all(Colors.transparent),
-                              toggleView: widget.toggleView),
-                          RegInButton(
-                            text: "Register",
-                            isSelected: true,
-                            buttonColor:
-                                MaterialStateProperty.all(Colors.white),
-                            toggleView: widget.toggleView,
-                          )
-                        ],
-                      ),
-                    )
-                  ]),
-            ),
-            Text(
-              "Shuttlr",
-              style: GoogleFonts.fasterOne(fontSize: 60, color: Colors.white),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40))),
-              height: 400,
-              width: MediaQuery.of(context).size.width,
-              child: Form(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 15, 0, 0),
-                      child: Text(
-                        "Register to Shuttlr",
-                        style: GoogleFonts.poppins(
-                            fontSize: 20,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30)),
-                            labelText: "Email",
-                            labelStyle: GoogleFonts.poppins(
-                                fontSize: 15, color: Colors.grey)),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: TextFormField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            labelText: "Password",
-                            labelStyle: GoogleFonts.poppins(
-                                fontSize: 15, color: Colors.grey)),
-                      ),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: ElevatedButton(
-                            onPressed: () {},
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.white)),
-                            child: Text("Click me"))),
-                  ],
+              margin: EdgeInsets.only(top: 100),
+              child: Hero(
+                tag: 'logo',
+                child: Image.asset(
+                  'assets/bus.png',
+                  width: 200,
+                  height: 200,
                 ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 40, bottom: 5),
+              child: Text(
+                "Sign up with your Phone Number",
+                style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 50),
+              child: Text(
+                "Please use a valid phone number",
+                style: GoogleFonts.poppins(color: Colors.grey),
+              ),
+            ),
+            SizedBox(
+              width: 320,
+              height: 50,
+              child: TextFormField(
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                    prefix: Text("+233 "),
+                    border: OutlineInputBorder(),
+                    labelText: "Phone number"),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                print("button pressed");
+              },
+              child: Container(
+                  margin: EdgeInsets.only(top: 100, bottom: 10),
+                  width: 300,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color.fromARGB(255, 4, 184, 97)),
+                  child: Center(
+                      child: Text("Register",
+                          style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500)))),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Already have an account? ",
+                  style: TextStyle(color: Colors.grey),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    widget.toggleView();
+                  },
+                  child: Text(
+                    "Login",
+                    style: TextStyle(color: Color.fromARGB(255, 167, 9, 9)),
+                  ),
+                )
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Text(
+                "Shuttlr",
+                style: GoogleFonts.fasterOne(
+                    fontSize: 60, color: Color.fromARGB(255, 4, 184, 97)),
               ),
             ),
           ],

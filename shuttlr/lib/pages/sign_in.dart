@@ -8,10 +8,10 @@ class SignIn extends StatefulWidget {
   final Function toggleView;
   const SignIn({super.key, required this.toggleView});
   @override
-  State<SignIn> createState() => _DummySignInState();
+  State<SignIn> createState() => _SignInState();
 }
 
-class _DummySignInState extends State<SignIn> with WidgetsBindingObserver {
+class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +81,7 @@ class _DummySignInState extends State<SignIn> with WidgetsBindingObserver {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "New to Shuttlr?   ",
+                  "New to Shuttlr? ",
                   style: TextStyle(color: Colors.grey),
                 ),
                 GestureDetector(
