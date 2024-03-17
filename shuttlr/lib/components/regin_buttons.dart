@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, prefer_const_constructors
 
 import 'package:flutter/material.dart';
 
@@ -25,8 +25,12 @@ class _RegInButtonState extends State<RegInButton> {
     return TextButton(
       onPressed: () {
         setState(() {
-          widget.toggleView();
-          widget.isSelected = !widget.isSelected;
+          if (widget.isSelected == false) {
+            widget.toggleView();
+            widget.isSelected = !widget.isSelected;
+          } else if (widget.isSelected == true) {
+            return;
+          }
         });
       },
       style: ButtonStyle(
@@ -34,7 +38,10 @@ class _RegInButtonState extends State<RegInButton> {
         elevation: MaterialStateProperty.all(0),
         fixedSize: MaterialStateProperty.all(const Size(140, 50)),
       ),
-      child: Text(widget.text),
+      child: Text(
+        widget.text,
+        style: TextStyle(fontSize: 15),
+      ),
     );
   }
 }
