@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "701111714927",
+    "project_id": "shuttlr-4d573",
+    "storage_bucket": "shuttlr-4d573.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701111714927:android:91c510f917b8d07c11799a",
+        "android_client_info": {
+          "package_name": "com.example.shuttlr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCS8dwhZotlkapnSSNIToDJni3_dyQkckg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

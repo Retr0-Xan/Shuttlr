@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:shuttlr/pages/sign_in.dart';
 import 'package:shuttlr/pages/register.dart';
 import 'package:shuttlr/wrapper.dart';
+import 'package:shuttlr/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
