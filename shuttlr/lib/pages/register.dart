@@ -14,6 +14,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  String phoneNumber = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +55,7 @@ class _RegisterState extends State<Register> {
               width: 320,
               height: 50,
               child: TextFormField(
+                onChanged: (value) => phoneNumber = value,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                     prefix: Text("+233 "),
@@ -63,7 +65,7 @@ class _RegisterState extends State<Register> {
             ),
             GestureDetector(
               onTap: () {
-                print("button pressed");
+                print(phoneNumber);
               },
               child: Container(
                   margin: EdgeInsets.only(top: 100, bottom: 10),
