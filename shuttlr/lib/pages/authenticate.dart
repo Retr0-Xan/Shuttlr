@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:shuttlr/pages/register.dart';
 import 'package:shuttlr/pages/sign_in.dart';
+import 'package:shuttlr/pages/landing_page.dart';
+import 'package:shuttlr/pages/register.dart';
+// import 'package:shuttlr/pages/sign_in.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {
@@ -21,8 +23,9 @@ class _AuthenticateState extends State<Authenticate> {
 
   @override
   Widget build(BuildContext context) {
-    return showSignIn
-        ? SignIn(toggleView: toggleView)
-        : Register(toggleView: toggleView);
+    return LandingPage();
+    // return showSignIn
+    //     ? DummySignIn(toggleView: toggleView)
+    //     : Register(toggleView: toggleView);
   }
 }
