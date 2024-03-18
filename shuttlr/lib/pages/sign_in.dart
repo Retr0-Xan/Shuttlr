@@ -28,7 +28,7 @@ class _SignInState extends State<SignIn> {
               child: Hero(
                 tag: 'logo',
                 child: Image.asset(
-                  'assets/bus.png',
+                  'assets/student (1).png',
                   width: 200,
                   height: 200,
                 ),
@@ -116,11 +116,18 @@ class _SignInState extends State<SignIn> {
               child: Material(
                 color: Colors.transparent,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: Text(
-                    "Shuttlr",
-                    style: GoogleFonts.fasterOne(
-                        fontSize: 60, color: Color.fromARGB(255, 4, 184, 97)),
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Image.asset('assets/bus.png', width: 50, height: 40),
+                      Text(
+                        "Shuttlr",
+                        style: GoogleFonts.fasterOne(
+                            fontSize: 60,
+                            color: Color.fromARGB(255, 4, 184, 97)),
+                      ),
+                    ],
                   ),
                 ),
               ),

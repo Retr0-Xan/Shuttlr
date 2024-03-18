@@ -33,7 +33,7 @@ class _RegisterState extends State<Register> {
               child: Hero(
                 tag: 'logo',
                 child: Image.asset(
-                  'assets/bus.png',
+                  'assets/taxi-driver (1).png',
                   width: 200,
                   height: 200,
                 ),
@@ -145,10 +145,16 @@ class _RegisterState extends State<Register> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20),
-              child: Text(
-                "Shuttlr",
-                style: GoogleFonts.fasterOne(
-                    fontSize: 60, color: Color.fromARGB(255, 4, 184, 97)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Image.asset('assets/bus.png', width: 50, height: 30),
+                  Text(
+                    "Shuttlr",
+                    style: GoogleFonts.fasterOne(
+                        fontSize: 60, color: Color.fromARGB(255, 4, 184, 97)),
+                  ),
+                ],
               ),
             ),
           ],
