@@ -12,6 +12,8 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   String username = '';
+  final _signInformkey = GlobalKey<FormState>();
+
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
@@ -49,19 +51,33 @@ class _SignInState extends State<SignIn> {
                 style: GoogleFonts.poppins(color: Colors.grey),
               ),
             ),
-            SizedBox(
-              width: 320,
-              height: 90,
-              child: TextFormField(
-                onChanged: (value) => username = value,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: "Username"),
+            Form(
+              key: _signInformkey,
+              child: SizedBox(
+                width: 320,
+                height: 90,
+                child: TextFormField(
+                  validator: (value) {
+                    return value!.length < 4
+                        ? 'Username must be at least 4 characters long'
+                        : null;
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      username = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(), labelText: "Username"),
+                ),
               ),
             ),
             GestureDetector(
               onTap: () async {
-                print(username);
-                await _auth.signInAnon();
+                if (_signInformkey.currentState!.validate()) {
+                  print(username);
+                  await _auth.signInAnon();
+                }
               },
               child: Container(
                   margin: EdgeInsets.only(top: 70, bottom: 10),

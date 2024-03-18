@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shuttlr/services/auth.dart';
 
@@ -16,6 +16,9 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   String email = '';
   String password = '';
+  String errorMsg = '';
+
+  final _driverFormkey = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
@@ -53,53 +56,75 @@ class _RegisterState extends State<Register> {
                 style: GoogleFonts.poppins(color: Colors.grey),
               ),
             ),
-            SizedBox(
-              width: 320,
-              height: 50,
-              child: TextFormField(
-                onChanged: (value) => email = value,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: "Email"),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              width: 320,
-              height: 50,
-              child: TextFormField(
-                obscureText: true,
-                onChanged: (value) => password = value,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: "Password"),
-              ),
-            ),
-            GestureDetector(
-              onTap: () async {
-                print(email);
-                print(password);
-                try {
-                  await _auth.signInWithEmail(email, password);
-                } catch (e) {
-                  print(e);
-                }
-              },
-              child: Container(
-                  margin: EdgeInsets.only(top: 60, bottom: 10),
-                  width: 300,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color.fromARGB(255, 4, 184, 97)),
-                  child: Center(
-                      child: Text("Sign In",
-                          style: GoogleFonts.poppins(
-                              fontSize: 15,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500)))),
-            ),
+            Form(
+                key: _driverFormkey,
+                child: Column(children: [
+                  SizedBox(
+                    width: 320,
+                    height: 50,
+                    child: TextFormField(
+                      onChanged: (value) => email = value,
+                      validator: (value) {
+                        return value!.isEmpty ? 'Please enter an email' : null;
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: "Email"),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    width: 320,
+                    height: 50,
+                    child: TextFormField(
+                      obscureText: true,
+                      onChanged: (value) => password = value,
+                      validator: (value) {
+                        return value!.isEmpty ? 'Please enter an email' : null;
+                      },
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), labelText: "Password"),
+                    ),
+                  ),
+                  Text(
+                    errorMsg,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      if (_driverFormkey.currentState!.validate()) {
+                        try {
+                          dynamic result =
+                              await _auth.signInWithEmail(email, password);
+                          if (result == null) {
+                            setState(() {
+                              errorMsg = 'Invalid Credentials!';
+                            });
+                          }
+                        } catch (e) {
+                          setState(() {
+                            errorMsg = e.toString();
+                          });
+                        }
+                      }
+                    },
+                    child: Container(
+                        margin: EdgeInsets.only(top: 40, bottom: 10),
+                        width: 300,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color.fromARGB(255, 4, 184, 97)),
+                        child: Center(
+                            child: Text("Sign In",
+                                style: GoogleFonts.poppins(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500)))),
+                  ),
+                ])),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -112,7 +137,7 @@ class _RegisterState extends State<Register> {
                     widget.toggleView();
                   },
                   child: Text(
-                    "Login as a User",
+                    "Sign in as a User",
                     style: TextStyle(color: Color.fromARGB(255, 167, 9, 9)),
                   ),
                 )
