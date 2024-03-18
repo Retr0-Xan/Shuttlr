@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shuttlr/pages/sign_in.dart';
+import 'package:shuttlr/wrapper.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -44,11 +45,7 @@ class LandingPage extends StatelessWidget {
                     context,
                     PageRouteBuilder(
                         pageBuilder: (context, animation, secondaryAnimation) =>
-                            SignIn(
-                              toggleView: () {
-                                Navigator.pushNamed(context, "/register");
-                              },
-                            ),
+                            Wrapper(),
                         transitionDuration: Duration(seconds: 1)));
               },
               child: Container(

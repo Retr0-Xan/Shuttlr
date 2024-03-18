@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shuttlr/services/auth.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -10,7 +11,8 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  String phoneNumber = '';
+  String username = '';
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +35,7 @@ class _SignInState extends State<SignIn> {
             Padding(
               padding: const EdgeInsets.only(top: 40, bottom: 5),
               child: Text(
-                "Log in with your Phone Number",
+                "Get started with Shuttlr",
                 style: GoogleFonts.poppins(
                     fontSize: 20,
                     color: Colors.black,
@@ -43,25 +45,24 @@ class _SignInState extends State<SignIn> {
             Padding(
               padding: const EdgeInsets.only(bottom: 50),
               child: Text(
-                "Make sure you have a Shuttlr account",
+                "Please provide a username",
                 style: GoogleFonts.poppins(color: Colors.grey),
               ),
             ),
             SizedBox(
               width: 320,
-              height: 50,
+              height: 90,
               child: TextFormField(
-                onChanged: (value) => phoneNumber = value,
-                keyboardType: TextInputType.phone,
+                onChanged: (value) => username = value,
                 decoration: InputDecoration(
-                    prefix: Text("+233 "),
-                    border: OutlineInputBorder(),
-                    labelText: "Phone number"),
+                    border: OutlineInputBorder(), labelText: "Username"),
               ),
             ),
             GestureDetector(
-              onTap: () {
-                print(phoneNumber);
+              onTap: () async {
+                print(username);
+                await _auth.signInAnon();
+                // await _auth.signOut();
               },
               child: Container(
                   margin: EdgeInsets.only(top: 100, bottom: 10),
