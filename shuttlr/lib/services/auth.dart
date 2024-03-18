@@ -10,6 +10,10 @@ Stream<User?> get user{
   return _auth.authStateChanges();
 }
 
+Stream<User?> get driver{
+  return _auth.authStateChanges();
+}
+
 //sign in anonymously
 Future signInAnon() async {
     try {
