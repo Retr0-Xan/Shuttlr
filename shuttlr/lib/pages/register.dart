@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shuttlr/services/auth.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -12,7 +14,9 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  String phoneNumber = '';
+  String email = '';
+  String password = '';
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +39,7 @@ class _RegisterState extends State<Register> {
             Padding(
               padding: const EdgeInsets.only(top: 40, bottom: 5),
               child: Text(
-                "Sign up with your Phone Number",
+                "Enter your Driver Credentials",
                 style: GoogleFonts.poppins(
                     fontSize: 20,
                     color: Colors.black,
@@ -45,7 +49,7 @@ class _RegisterState extends State<Register> {
             Padding(
               padding: const EdgeInsets.only(bottom: 50),
               child: Text(
-                "Please use a valid phone number",
+                "Please use valid credentials",
                 style: GoogleFonts.poppins(color: Colors.grey),
               ),
             ),
@@ -53,27 +57,44 @@ class _RegisterState extends State<Register> {
               width: 320,
               height: 50,
               child: TextFormField(
-                onChanged: (value) => phoneNumber = value,
-                keyboardType: TextInputType.phone,
+                onChanged: (value) => email = value,
+                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                    prefix: Text("+233 "),
-                    border: OutlineInputBorder(),
-                    labelText: "Phone number"),
+                    border: OutlineInputBorder(), labelText: "Email"),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              width: 320,
+              height: 50,
+              child: TextFormField(
+                obscureText: true,
+                onChanged: (value) => password = value,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), labelText: "Password"),
               ),
             ),
             GestureDetector(
-              onTap: () {
-                print(phoneNumber);
+              onTap: () async {
+                print(email);
+                print(password);
+                try {
+                  await _auth.signInWithEmail(email, password);
+                } catch (e) {
+                  print(e);
+                }
               },
               child: Container(
-                  margin: EdgeInsets.only(top: 100, bottom: 10),
+                  margin: EdgeInsets.only(top: 60, bottom: 10),
                   width: 300,
                   height: 50,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Color.fromARGB(255, 4, 184, 97)),
                   child: Center(
-                      child: Text("Register",
+                      child: Text("Sign In",
                           style: GoogleFonts.poppins(
                               fontSize: 15,
                               color: Colors.white,
@@ -83,7 +104,7 @@ class _RegisterState extends State<Register> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Already have an account? ",
+                  "Looking to catch a bus? ",
                   style: TextStyle(color: Colors.grey),
                 ),
                 GestureDetector(
@@ -91,14 +112,14 @@ class _RegisterState extends State<Register> {
                     widget.toggleView();
                   },
                   child: Text(
-                    "Login",
+                    "Login as a User",
                     style: TextStyle(color: Color.fromARGB(255, 167, 9, 9)),
                   ),
                 )
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 30),
+              padding: const EdgeInsets.only(top: 20),
               child: Text(
                 "Shuttlr",
                 style: GoogleFonts.fasterOne(

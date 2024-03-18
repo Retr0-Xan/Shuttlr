@@ -31,4 +31,16 @@ Future signOut() async {
       return null;
     }
   }
+
+  //sign in with email
+  Future signInWithEmail(String email, String password) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      User? Firebaseuser = userCredential.user;
+      return Firebaseuser;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 }

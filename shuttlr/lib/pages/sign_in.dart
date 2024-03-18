@@ -81,7 +81,7 @@ class _SignInState extends State<SignIn> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "New to Shuttlr? ",
+                  "Sign in as a ",
                   style: TextStyle(color: Colors.grey),
                 ),
                 GestureDetector(
@@ -89,7 +89,7 @@ class _SignInState extends State<SignIn> {
                     widget.toggleView();
                   },
                   child: Text(
-                    "Register Now",
+                    "Driver",
                     style: TextStyle(color: Color.fromARGB(255, 167, 9, 9)),
                   ),
                 )
