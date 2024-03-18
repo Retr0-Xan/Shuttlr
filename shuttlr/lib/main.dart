@@ -7,7 +7,6 @@ import 'package:shuttlr/pages/landing_page.dart';
 import 'package:shuttlr/pages/sign_in.dart';
 import 'package:shuttlr/pages/register.dart';
 import 'package:shuttlr/services/auth.dart';
-import 'package:shuttlr/wrapper.dart';
 import 'package:shuttlr/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 

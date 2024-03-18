@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shuttlr/services/auth.dart';
@@ -62,10 +62,9 @@ class _SignInState extends State<SignIn> {
               onTap: () async {
                 print(username);
                 await _auth.signInAnon();
-                // await _auth.signOut();
               },
               child: Container(
-                  margin: EdgeInsets.only(top: 100, bottom: 10),
+                  margin: EdgeInsets.only(top: 70, bottom: 10),
                   width: 300,
                   height: 50,
                   decoration: BoxDecoration(
