@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shuttlr/services/auth.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -17,6 +17,7 @@ class _RegisterState extends State<Register> {
   String email = '';
   String password = '';
   String errorMsg = '';
+  bool signingIn = false;
 
   final _driverFormkey = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
@@ -82,7 +83,9 @@ class _RegisterState extends State<Register> {
                       obscureText: true,
                       onChanged: (value) => password = value,
                       validator: (value) {
-                        return value!.isEmpty ? 'Please enter an email' : null;
+                        return value!.isEmpty
+                            ? 'Please enter a password'
+                            : null;
                       },
                       decoration: InputDecoration(
                           border: OutlineInputBorder(), labelText: "Password"),
@@ -95,17 +98,23 @@ class _RegisterState extends State<Register> {
                   GestureDetector(
                     onTap: () async {
                       if (_driverFormkey.currentState!.validate()) {
+                        setState(() {
+                          signingIn = true;
+                        });
                         try {
                           dynamic result =
                               await _auth.signInWithEmail(email, password);
+
                           if (result == null) {
                             setState(() {
                               errorMsg = 'Invalid Credentials!';
+                              signingIn = false;
                             });
                           }
                         } catch (e) {
                           setState(() {
                             errorMsg = e.toString();
+                            signingIn = false;
                           });
                         }
                       }
@@ -114,15 +123,25 @@ class _RegisterState extends State<Register> {
                         margin: EdgeInsets.only(top: 40, bottom: 10),
                         width: 300,
                         height: 50,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color.fromARGB(255, 4, 184, 97)),
+                        decoration: signingIn
+                            ? BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.grey)
+                            : BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color.fromARGB(255, 4, 184, 97)),
                         child: Center(
-                            child: Text("Sign In",
-                                style: GoogleFonts.poppins(
-                                    fontSize: 15,
+                            child: signingIn
+                                ? SpinKitRing(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.w500)))),
+                                    lineWidth: 4,
+                                    size: 30,
+                                  )
+                                : Text("Sign In",
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500)))),
                   ),
                 ])),
             Row(
@@ -145,16 +164,10 @@ class _RegisterState extends State<Register> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Image.asset('assets/bus.png', width: 50, height: 30),
-                  Text(
-                    "Shuttlr",
-                    style: GoogleFonts.fasterOne(
-                        fontSize: 60, color: Color.fromARGB(255, 4, 184, 97)),
-                  ),
-                ],
+              child: Text(
+                "Shuttlr",
+                style: GoogleFonts.fasterOne(
+                    fontSize: 60, color: Color.fromARGB(255, 4, 184, 97)),
               ),
             ),
           ],

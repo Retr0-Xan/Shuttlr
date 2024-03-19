@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shuttlr/services/auth.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -13,6 +14,8 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   String username = '';
   final _signInformkey = GlobalKey<FormState>();
+  bool signingIn = false;
+  String errorMsg = '';
 
   final AuthService _auth = AuthService();
   @override
@@ -72,26 +75,49 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
             ),
+            Text(
+              errorMsg,
+              style: TextStyle(color: Colors.red),
+            ),
             GestureDetector(
               onTap: () async {
                 if (_signInformkey.currentState!.validate()) {
-                  print(username);
-                  await _auth.signInAnon();
+                  setState(() {
+                    signingIn = true;
+                  });
+                  try {
+                    await _auth.signInAnon();
+                  } catch (e) {
+                    setState(() {
+                      signingIn = false;
+                      errorMsg = e.toString();
+                    });
+                  }
                 }
               },
               child: Container(
                   margin: EdgeInsets.only(top: 70, bottom: 10),
                   width: 300,
                   height: 50,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color.fromARGB(255, 4, 184, 97)),
+                  decoration: signingIn
+                      ? BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.grey)
+                      : BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromARGB(255, 4, 184, 97)),
                   child: Center(
-                      child: Text("Sign in",
-                          style: GoogleFonts.poppins(
-                              fontSize: 15,
+                      child: signingIn
+                          ? SpinKitRing(
                               color: Colors.white,
-                              fontWeight: FontWeight.w500)))),
+                              size: 30,
+                              lineWidth: 4,
+                            )
+                          : Text("Sign In",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500)))),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -117,17 +143,10 @@ class _SignInState extends State<SignIn> {
                 color: Colors.transparent,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Image.asset('assets/bus.png', width: 50, height: 40),
-                      Text(
-                        "Shuttlr",
-                        style: GoogleFonts.fasterOne(
-                            fontSize: 60,
-                            color: Color.fromARGB(255, 4, 184, 97)),
-                      ),
-                    ],
+                  child: Text(
+                    "Shuttlr",
+                    style: GoogleFonts.fasterOne(
+                        fontSize: 60, color: Color.fromARGB(255, 4, 184, 97)),
                   ),
                 ),
               ),
