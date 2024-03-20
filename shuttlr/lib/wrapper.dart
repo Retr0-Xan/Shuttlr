@@ -15,6 +15,10 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<User?>(context);
     return user == null
         ? Authenticate()
-        : (user.isAnonymous ? HomePage() : DriverPage());
+        : (user.isAnonymous
+            ? HomePage()
+            : DriverPage(
+                uid: user.uid,
+              ));
   }
 }

@@ -10,8 +10,12 @@ class DatabaseService {
 
   Future updateLocation(String longitude, String latitude) async {
     return await locationCollection.doc(uid).set({
-      'longitude' : longitude,
-      'latitude' : latitude,
+      'longitude': longitude,
+      'latitude': latitude,
     });
+  }
+
+  Stream<QuerySnapshot> get locations {
+    return locationCollection.snapshots();
   }
 }

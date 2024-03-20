@@ -1,41 +1,70 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, must_be_immutable
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shuttlr/services/auth.dart';
 import 'package:shuttlr/services/database.dart';
-import 'package:provider/provider.dart';
 
-class DriverPage extends StatelessWidget {
-  final AuthService _auth = AuthService();
+class DriverPage extends StatefulWidget {
   String? uid;
 
-  DriverPage({super.key});
+  DriverPage({super.key, this.uid});
+
+  @override
+  State<DriverPage> createState() => _DriverPageState();
+}
+
+class _DriverPageState extends State<DriverPage> {
+  final AuthService _auth = AuthService();
+
+  bool sessionStarted = false;
+
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User?>.value(
-      initialData: null,
-      value: AuthService().user,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Driver page'),
-          actions: [
-            IconButton(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Driver page'),
+        actions: [
+          IconButton(
               icon: Icon(Icons.logout),
               onPressed: () async {
                 await _auth.signOut();
-              },
-            )
-          ],
-        ),
-        body: Center(
-          child: ElevatedButton(
-            child: Text("Start Session"),
-            onPressed: () async {
-              User? user = Provider.of<User?>(context, listen: false);
-              uid = user?.uid;
-              await DatabaseService(uid: uid).updateLocation("246", "359");
-            },
+              })
+        ],
+      ),
+      body: Center(
+        child: GestureDetector(
+          onTap: () async {
+            setState(() {
+              sessionStarted = !sessionStarted;
+            });
+            //start tracking and be updating updateLocation method with new data
+            await DatabaseService(uid: widget.uid).updateLocation("123", "122");
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 40, bottom: 10),
+            width: 300,
+            height: 50,
+            decoration: sessionStarted
+                ? BoxDecoration(
+                    borderRadius: BorderRadius.circular(10), color: Colors.red)
+                : BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color.fromARGB(255, 4, 184, 97)),
+            child: Center(
+                child: sessionStarted
+                    ? Text("Stop Session",
+                        style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500))
+                    : Text("Start Session",
+                        style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500))),
           ),
         ),
       ),
