@@ -5,6 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shuttlr/services/auth.dart';
 import 'package:shuttlr/services/database.dart';
 
+
+//this is where the drivers will land after signing in with their credentials
+//they can start/end sessions here which will update the realtime database
+
 class DriverPage extends StatefulWidget {
   String? uid;
 
@@ -36,6 +40,7 @@ class _DriverPageState extends State<DriverPage> {
         child: GestureDetector(
           onTap: () async {
             setState(() {
+              //this bool will help us change the state of the button and perform other functions
               sessionStarted = !sessionStarted;
             });
             //start tracking and be updating updateLocation method with new data

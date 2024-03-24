@@ -1,12 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shuttlr/services/auth.dart';
 import 'package:shuttlr/services/database.dart';
+
+//This is the home page for users(riders)
+//it displays a map view with markers showing the current active tracking sessions
 
 class HomePage extends StatelessWidget {
   final AuthService _auth = AuthService();
@@ -17,6 +19,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //we are making the location data stream available to the home widget
+    //because we need that data to be able to track the buses on the map
     return StreamProvider<QuerySnapshot?>.value(
       initialData: null,
       value: DatabaseService().locations,
@@ -68,6 +72,8 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
+        //we are using the consumer with the data from the provider to be able to access and use that data
+        //with the consumer we return the actual map widget which will now have access to the data from the provider
         body: Consumer<QuerySnapshot?>(
           builder: (context, locationsSnapshot, _) {
             if (locationsSnapshot == null) {
@@ -81,9 +87,9 @@ class HomePage extends StatelessWidget {
             }
 
             // Data has been successfully fetched
-            final locations = locationsSnapshot.docs;
 
             return Stack(
+              //TODO: instead of sourceLoc and destLoc use data from the locations stream
               children: [
                 GoogleMap(
                   initialCameraPosition:

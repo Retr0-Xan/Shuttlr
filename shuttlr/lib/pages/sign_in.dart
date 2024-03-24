@@ -10,6 +10,7 @@ class SignIn extends StatefulWidget {
   @override
   State<SignIn> createState() => _SignInState();
 }
+//refer to register.dart for comments
 
 class _SignInState extends State<SignIn> {
   String username = '';

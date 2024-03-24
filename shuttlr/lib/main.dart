@@ -16,6 +16,10 @@ void main() async {
   runApp(const MyApp());
 }
 
+//we listen to auth changes and route accordingly
+//using the StreamProvider.value from the provider class
+//we select which stream we want to listen to in the value property
+//since we are listening to this stream at the root widget, the data from the stream is accessible to the rest of its descendant widgets
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override

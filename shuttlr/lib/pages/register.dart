@@ -5,6 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shuttlr/services/auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+
+//this is the sign in page for drivers
+//they enter credentials and are redirected to the driver page
+
 class Register extends StatefulWidget {
   final Function toggleView;
   const Register({super.key, required this.toggleView});
@@ -26,6 +30,7 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: SingleChildScrollView(
+        //We used singleScrollChild View to allow scrolling of the page when the keyboard pops up for data entry
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -96,6 +101,8 @@ class _RegisterState extends State<Register> {
                     style: TextStyle(color: Colors.red),
                   ),
                   GestureDetector(
+                    //we use the signingIn bool to check whether the sign in process has begun 
+                    //this also allows us to change the button text to a loading widget
                     onTap: () async {
                       if (_driverFormkey.currentState!.validate()) {
                         setState(() {

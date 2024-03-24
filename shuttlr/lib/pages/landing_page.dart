@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shuttlr/wrapper.dart';
 
+
+//this is the initial page of the application
+//from here we can go to the login screen if the user is not logged in
+//or the home screen if he is already logged in
+//the widget in charg of the redirection is the wrapper widget
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
 

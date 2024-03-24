@@ -5,10 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  //this is a stream of users which will help us track user auth changes
   Stream<User?> get user {
     return _auth.authStateChanges();
   }
-
+  //this is a stream of users(which are drivers) which will help us track user auth changes
   Stream<User?> get driver {
     return _auth.authStateChanges();
   }
