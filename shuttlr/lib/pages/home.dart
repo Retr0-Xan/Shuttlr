@@ -97,14 +97,10 @@ class HomePage extends StatelessWidget {
               if (data != null &&
                   data.containsKey('latitude') &&
                   data.containsKey('longitude')) {
-                // Extract latitude and longitude from the data map
-                String latitude = data['latitude'].toString();
-                String longitude = data['longitude'].toString();
-
                 // Create a new map for the coordinates
                 Map<String, String> coordinates = {
-                  'latitude': latitude,
-                  'longitude': longitude
+                  'latitude': data['latitude'].toString(),
+                  'longitude': data['longitude'].toString()
                 };
                 // Add the coordinates to your own map using the document ID as the key
                 myCoordinatesMap[doc.id] = coordinates;
