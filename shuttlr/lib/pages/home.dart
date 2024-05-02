@@ -107,45 +107,53 @@ class HomePage extends StatelessWidget {
               }
             }
             // Data has been successfully fetched
-            return Stack(
-              children: [
-                GoogleMap(
-                    initialCameraPosition:
-                        CameraPosition(target: _initialLoc, zoom: 13.5),
-                    markers:
-                        //we look at the length of myCoordinates map which holds all the current logged in drivers coordinates
-                        // we bulid the markers based on that data
-                        //markers are updated accordingly
-                        Set<Marker>.of(myCoordinatesMap.keys.map((documentId) {
-                      Map<String, String> coordinates =
-                          myCoordinatesMap[documentId]!;
+            return Stack(children: [
+              GoogleMap(
+                initialCameraPosition:
+                    CameraPosition(target: _initialLoc, zoom: 13.5),
+                markers:
+                    //we look at the length of myCoordinates map which holds all the current logged in drivers coordinates
+                    // we bulid the markers based on that data
+                    //markers are updated accordingly
+                    Set<Marker>.of(
+                  myCoordinatesMap.keys.map((documentId) {
+                    Map<String, String> coordinates =
+                        myCoordinatesMap[documentId]!;
+
+                    if (coordinates['latitude']!.isNotEmpty &&
+                        coordinates['longitude']!.isNotEmpty) {
+                      double latitude = double.parse(coordinates['latitude']!);
+                      double longitude =
+                          double.parse(coordinates['longitude']!);
 
                       return Marker(
                           markerId: MarkerId(documentId),
                           icon: BitmapDescriptor.defaultMarker,
-                          position: LatLng(
-                              double.parse(coordinates['latitude']!),
-                              double.parse(coordinates['longitude']!)));
-                    }))),
-                Positioned(
-                  left: 20,
-                  top: 30,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.transparent, width: 0),
-                        borderRadius: BorderRadius.circular(60)),
-                    child: IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      icon: Icon(Icons.menu),
-                      iconSize: 30,
-                    ),
+                          position: LatLng(latitude, longitude));
+                    } else {
+                      return null;
+                    }
+                  }).whereType<Marker>(),
+                ),
+              ),
+              Positioned(
+                left: 20,
+                top: 30,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.transparent, width: 0),
+                      borderRadius: BorderRadius.circular(60)),
+                  child: IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    icon: Icon(Icons.menu),
+                    iconSize: 30,
                   ),
                 ),
-              ],
-            );
+              ),
+            ]);
           },
         ),
       ),
