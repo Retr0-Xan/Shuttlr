@@ -61,9 +61,13 @@ class _DriverPageState extends State<DriverPage> {
               sessionStarted = !sessionStarted;
             });
             //start tracking and be updating updateLocation method with new data
-            await DatabaseService(uid: widget.uid).updateLocation(
-                (currentLocation!.longitude!).toString(),
-                (currentLocation!.latitude!).toString());
+            if (sessionStarted) {
+              await DatabaseService(uid: widget.uid).updateLocation(
+                  (currentLocation!.longitude!).toString(),
+                  (currentLocation!.latitude!).toString());
+            } else {
+              await DatabaseService(uid: widget.uid).updateLocation("", "");
+            }
           },
           child: Container(
             margin: EdgeInsets.only(top: 40, bottom: 10),
