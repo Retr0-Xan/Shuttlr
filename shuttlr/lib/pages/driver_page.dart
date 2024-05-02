@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:location/location.dart';
 import 'package:shuttlr/services/auth.dart';
 import 'package:shuttlr/services/database.dart';
-
 
 //this is where the drivers will land after signing in with their credentials
 //they can start/end sessions here which will update the realtime database
@@ -19,9 +19,26 @@ class DriverPage extends StatefulWidget {
 }
 
 class _DriverPageState extends State<DriverPage> {
+  @override
+  void initState() {
+    super.initState();
+    getCurrentLocation();
+  }
+
   final AuthService _auth = AuthService();
 
   bool sessionStarted = false;
+  LocationData? currentLocation;
+
+  void getCurrentLocation() {
+    Location location = Location();
+
+    location.getLocation().then(
+      (location) {
+        currentLocation = location;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +61,9 @@ class _DriverPageState extends State<DriverPage> {
               sessionStarted = !sessionStarted;
             });
             //start tracking and be updating updateLocation method with new data
-            await DatabaseService(uid: widget.uid).updateLocation("123", "122");
+            await DatabaseService(uid: widget.uid).updateLocation(
+                (currentLocation!.longitude!).toString(),
+                (currentLocation!.latitude!).toString());
           },
           child: Container(
             margin: EdgeInsets.only(top: 40, bottom: 10),
