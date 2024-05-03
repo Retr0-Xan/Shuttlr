@@ -32,6 +32,10 @@ class _DriverPageState extends State<DriverPage> {
     }
   }
 
+  void updateLocation(String latitude, String longitude) async {
+    await DatabaseService(uid: widget.uid).updateLocation(latitude, longitude);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -61,18 +65,10 @@ class _DriverPageState extends State<DriverPage> {
       if (locationSubscription == null) {
         locationSubscription = location.onLocationChanged.listen((newLocation) {
           currentLocation = newLocation;
-          setState(() async {
-            await DatabaseService(uid: widget.uid).updateLocation(
-                (currentLocation!.latitude).toString(),
-                (currentLocation!.longitude).toString());
-          });
+          updateLocation((currentLocation!.latitude).toString(),
+              (currentLocation!.longitude).toString());
         });
       }
-    } else if (sessionStatus == false) {
-      locationSubscription?.cancel();
-      locationSubscription = null;
-
-      await DatabaseService(uid: widget.uid).updateLocation("", "");
     }
   }
 
@@ -85,7 +81,7 @@ class _DriverPageState extends State<DriverPage> {
           IconButton(
               icon: Icon(Icons.logout),
               onPressed: () async {
-                DatabaseService(uid: widget.uid).updateLocation("", "");
+                updateLocation("", "");
                 await _auth.signOut();
               })
         ],
@@ -102,7 +98,10 @@ class _DriverPageState extends State<DriverPage> {
               getCurrentLocation(sessionStarted);
             } else if (sessionStarted == false) {
               //if session has ended remove coordinates to remove marker from map
-              getCurrentLocation(sessionStarted);
+              locationSubscription?.cancel();
+              locationSubscription = null;
+
+              updateLocation("", "");
             }
           },
           child: Container(
