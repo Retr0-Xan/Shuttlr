@@ -14,8 +14,16 @@ class HomePage extends StatelessWidget {
   final AuthService _auth = AuthService();
   static const LatLng _initialLoc =
       LatLng(6.6732588425127135, -1.5674974485816102);
-  // static const LatLng _destLoc = LatLng(6.668746, -1.574481);
   Map<String, Map<String, String>> myCoordinatesMap = {};
+  BitmapDescriptor busIcon = BitmapDescriptor.defaultMarker;
+
+  void setCustomMarker() {
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration.empty, "assets/bus-marker.png")
+        .then((icon) {
+      busIcon = icon;
+    });
+  }
 
   HomePage({Key? key}) : super(key: key);
 
@@ -109,6 +117,7 @@ class HomePage extends StatelessWidget {
             // Data has been successfully fetched
             return Stack(children: [
               GoogleMap(
+                mapType: MapType.terrain,
                 initialCameraPosition:
                     CameraPosition(target: _initialLoc, zoom: 13.5),
                 markers:
@@ -128,7 +137,7 @@ class HomePage extends StatelessWidget {
 
                       return Marker(
                           markerId: MarkerId(documentId),
-                          icon: BitmapDescriptor.defaultMarker,
+                          icon: busIcon,
                           position: LatLng(latitude, longitude));
                     } else {
                       return null;
