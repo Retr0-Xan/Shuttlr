@@ -22,6 +22,22 @@ class DriverPage extends StatefulWidget {
 }
 
 class _DriverPageState extends State<DriverPage> {
+  void getPermissions() async {
+    var status = await Permission.locationWhenInUse.status;
+    if (!status.isGranted) {
+      status = await Permission.locationWhenInUse.request();
+    }
+    if (status.isGranted) {
+      status = await Permission.locationAlways.request();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getPermissions();
+  }
+
   final AuthService _auth = AuthService();
 
   bool sessionStarted = false;
@@ -29,15 +45,9 @@ class _DriverPageState extends State<DriverPage> {
   StreamSubscription<LocationData>? locationSubscription;
 
   void getCurrentLocation(bool sessionStatus) async {
-    var status = await Permission.photos.status;
-    if (status.isDenied) {
-      print("Access denied");
-      Permission.photos.request();
-    } else {
-      print("Exception occured");
-    }
+  Location location = Location();
+  location.enableBackgroundMode();
     if (sessionStatus == true) {
-      Location location = Location();
       location.getLocation().then(
         (location) async {
           currentLocation = location;
@@ -46,6 +56,7 @@ class _DriverPageState extends State<DriverPage> {
               (currentLocation!.longitude).toString());
         },
       );
+      // ignore: prefer_conditional_assignment
       if (locationSubscription == null) {
         locationSubscription = location.onLocationChanged.listen((newLocation) {
           currentLocation = newLocation;
