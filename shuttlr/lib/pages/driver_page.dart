@@ -45,8 +45,9 @@ class _DriverPageState extends State<DriverPage> {
   StreamSubscription<LocationData>? locationSubscription;
 
   void getCurrentLocation(bool sessionStatus) async {
-  Location location = Location();
-  location.enableBackgroundMode();
+    Location location = Location();
+    location.enableBackgroundMode(enable: true);
+    location.changeSettings(accuracy: LocationAccuracy.high);
     if (sessionStatus == true) {
       location.getLocation().then(
         (location) async {
