@@ -29,6 +29,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    setCustomMarker();
     //we are making the location data stream available to the home widget
     //because we need that data to be able to track the buses on the map
     return StreamProvider<QuerySnapshot?>.value(
@@ -117,7 +118,7 @@ class HomePage extends StatelessWidget {
             // Data has been successfully fetched
             return Stack(children: [
               GoogleMap(
-                mapType: MapType.terrain,
+                mapType: MapType.normal,
                 initialCameraPosition:
                     CameraPosition(target: _initialLoc, zoom: 13.5),
                 markers:

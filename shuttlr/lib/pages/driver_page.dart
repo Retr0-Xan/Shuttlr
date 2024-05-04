@@ -32,7 +32,7 @@ class _DriverPageState extends State<DriverPage> {
     }
   }
 
-  void updateLocation(String latitude, String longitude) async {
+  Future<dynamic> updateLocation(String latitude, String longitude) async {
     await DatabaseService(uid: widget.uid).updateLocation(latitude, longitude);
   }
 
@@ -81,6 +81,8 @@ class _DriverPageState extends State<DriverPage> {
           IconButton(
               icon: Icon(Icons.logout),
               onPressed: () async {
+                locationSubscription?.cancel();
+                locationSubscription = null;
                 updateLocation("", "");
                 await _auth.signOut();
               })
