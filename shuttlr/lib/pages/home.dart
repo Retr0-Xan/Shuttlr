@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
 
   void setCustomMarker() {
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration.empty, "assets/bus-marker.png")
+            ImageConfiguration.empty, "assets/bus-marker-green.png")
         .then((icon) {
       busIcon = icon;
     });
