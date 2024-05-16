@@ -1,5 +1,4 @@
 // ignore_for_file: avoid_print
-
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -9,16 +8,21 @@ class AuthService {
   Stream<User?> get user {
     return _auth.authStateChanges();
   }
+
   //this is a stream of users(which are drivers) which will help us track user auth changes
   Stream<User?> get driver {
     return _auth.authStateChanges();
   }
 
 //sign in anonymously
-  Future signInAnon() async {
+  Future signInAnon(String? username) async {
     try {
-      UserCredential userCredential = await _auth.signInAnonymously();
+      UserCredential? userCredential = await _auth.signInAnonymously();
       User? Firebaseuser = userCredential.user;
+      await Firebaseuser?.updateDisplayName(username);
+      await Firebaseuser?.reload();
+      Firebaseuser = FirebaseAuth.instance.currentUser;
+      print(Firebaseuser);
       return Firebaseuser;
     } catch (e) {
       print(e.toString());

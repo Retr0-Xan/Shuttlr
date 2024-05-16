@@ -18,6 +18,10 @@ class _SignInState extends State<SignIn> {
   bool signingIn = false;
   String errorMsg = '';
 
+  String getUsername() {
+    return username;
+  }
+
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
@@ -87,7 +91,7 @@ class _SignInState extends State<SignIn> {
                     signingIn = true;
                   });
                   try {
-                    await _auth.signInAnon();
+                    await _auth.signInAnon(username);
                   } catch (e) {
                     setState(() {
                       signingIn = false;

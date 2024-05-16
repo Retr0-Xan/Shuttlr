@@ -1,5 +1,6 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable
+// ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_const_literals_to_create_immutables
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,7 @@ import 'package:shuttlr/services/database.dart';
 //it displays a map view with markers showing the current active tracking sessions
 
 class HomePage extends StatelessWidget {
+  final String? username;
   final AuthService _auth = AuthService();
   static const LatLng _initialLoc =
       LatLng(6.6732588425127135, -1.5674974485816102);
@@ -25,7 +27,7 @@ class HomePage extends StatelessWidget {
     });
   }
 
-  HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key, required this.username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +44,34 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  DrawerHeader(child: Image.asset('assets/bus.png')),
+                  Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade400,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        width: 60,
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.fromLTRB(20, 50, 0, 0),
+                        child: Icon(
+                          Icons.person,
+                          size: 40.0,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 50, left: 10),
+                        child: Text(
+                          '${username}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      )
+                    ],
+                  ),
                   SizedBox(
                     height: 30,
                   ),
