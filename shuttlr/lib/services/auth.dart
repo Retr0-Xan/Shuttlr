@@ -1,12 +1,28 @@
 // ignore_for_file: avoid_print
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  //this is a stream of users which will help us track user auth changes
+  //this is a stream of users which will help us track user auth changes.
+  //we use this stream to route the user to the appropriate page after login
+  //we use the delayStreamTransformer to delay the stream by 1 second to ensure that the stream is not empty
+  //this is because for anonymous sign ins, the displayName parameter is null right after signing in
+  //by delaying the stream, we give the user object a chance to update the displayName to be able to be accessed in the home page
+
   Stream<User?> get user {
-    return _auth.authStateChanges();
+    return _auth
+        .authStateChanges()
+        .transform(delayStreamTransformer(Duration(seconds: 1)));
+  }
+
+  StreamTransformer<T, T> delayStreamTransformer<T>(Duration duration) {
+    return StreamTransformer<T, T>.fromHandlers(
+      handleData: (data, sink) {
+        Timer(duration, () => sink.add(data));
+      },
+    );
   }
 
   //this is a stream of users(which are drivers) which will help us track user auth changes
@@ -15,14 +31,14 @@ class AuthService {
   }
 
 //sign in anonymously
-  Future signInAnon(String? username) async {
+  Future<User?> signInAnon(String user_name) async {
     try {
+      // updateName(user_name);
       UserCredential? userCredential = await _auth.signInAnonymously();
       User? Firebaseuser = userCredential.user;
-      await Firebaseuser?.updateDisplayName(username);
+      await Firebaseuser?.updateDisplayName(user_name);
       await Firebaseuser?.reload();
       Firebaseuser = FirebaseAuth.instance.currentUser;
-      print(Firebaseuser);
       return Firebaseuser;
     } catch (e) {
       print(e.toString());

@@ -1,26 +1,26 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shuttlr/services/auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
+
   const SignIn({super.key, required this.toggleView});
+
   @override
   State<SignIn> createState() => _SignInState();
 }
 //refer to register.dart for comments
 
 class _SignInState extends State<SignIn> {
-  String username = '';
   final _signInformkey = GlobalKey<FormState>();
+  String username = '';
   bool signingIn = false;
   String errorMsg = '';
-
-  String getUsername() {
-    return username;
-  }
 
   final AuthService _auth = AuthService();
   @override

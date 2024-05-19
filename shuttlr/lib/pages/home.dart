@@ -1,22 +1,32 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_const_literals_to_create_immutables
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shuttlr/services/auth.dart';
 import 'package:shuttlr/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 //This is the home page for users(riders)
 //it displays a map view with markers showing the current active tracking sessions
 
-class HomePage extends StatelessWidget {
-  final String? username;
-  final AuthService _auth = AuthService();
+class HomePage extends StatefulWidget {
   static const LatLng _initialLoc =
       LatLng(6.6732588425127135, -1.5674974485816102);
+
+  HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final AuthService _auth = AuthService();
+  User? current_user = FirebaseAuth.instance.currentUser;
+
   Map<String, Map<String, String>> myCoordinatesMap = {};
+
   BitmapDescriptor busIcon = BitmapDescriptor.defaultMarker;
 
   void setCustomMarker() {
@@ -26,8 +36,6 @@ class HomePage extends StatelessWidget {
       busIcon = icon;
     });
   }
-
-  HomePage({Key? key, required this.username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +73,11 @@ class HomePage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 50, left: 10),
                         child: Text(
-                          '${username}',
+                          //over here we are getting the data from the current user signed in
+                          //if for som reason, the display name did not update, we display a generic name
+                          current_user?.displayName == null
+                              ? "Anonymous"
+                              : current_user!.displayName!,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
@@ -148,7 +160,7 @@ class HomePage extends StatelessWidget {
               GoogleMap(
                 mapType: MapType.normal,
                 initialCameraPosition:
-                    CameraPosition(target: _initialLoc, zoom: 13.5),
+                    CameraPosition(target: HomePage._initialLoc, zoom: 13.5),
                 markers:
                     //we look at the length of myCoordinates map which holds all the current logged in drivers coordinates
                     // we bulid the markers based on that data
