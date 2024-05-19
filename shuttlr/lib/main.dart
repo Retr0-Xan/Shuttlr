@@ -21,9 +21,14 @@ void main() async {
 //we select which stream we want to listen to in the value property
 //since we are listening to this stream at the root widget, the data from the stream is accessible to the rest of its descendant widgets
 class MyApp extends StatelessWidget {
+  Future<void> _loadAssets(context) async {
+    await precacheImage(AssetImage('assets/inside-bus.jpg'), context);
+  }
+
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
+    _loadAssets(context);
     return StreamProvider<User?>.value(
       value: AuthService().user,
       initialData: null,

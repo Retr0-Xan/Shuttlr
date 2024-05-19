@@ -8,6 +8,7 @@ import 'package:shuttlr/wrapper.dart';
 //from here we can go to the login screen if the user is not logged in
 //or the home screen if he is already logged in
 //the widget in charg of the redirection is the wrapper widget
+
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
 
@@ -75,46 +76,6 @@ class LandingPage extends StatelessWidget {
           ),
         ],
       ),
-      // body: Center(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     crossAxisAlignment: CrossAxisAlignment.center,
-      //     children: [
-      //       Image.asset("assets/shuttlr-logo.png", width: 200, height: 200),
-      //       Container(
-      //         padding: EdgeInsets.symmetric(horizontal: 20),
-      //         child: Text(
-      //           "Welcome to Shuttlr - Your Ultimate Shuttle Tracking Solution!\nStay informed, stay connected, and enjoy a smoother journey with Shuttlr.",
-      //           style:
-      //               GoogleFonts.poppins(fontSize: 17, color: Colors.grey[500]),
-      //         ),
-      //       ),
-      //       GestureDetector(
-      //         onTap: () {
-      //           Navigator.push(
-      //               context,
-      //               PageRouteBuilder(
-      //                   pageBuilder: (context, animation, secondaryAnimation) =>
-      //                       Wrapper(),
-      //                   transitionDuration: Duration(seconds: 1)));
-      //         },
-      //         child: Container(
-      //             margin: EdgeInsets.only(top: 100, bottom: 10),
-      //             width: 300,
-      //             height: 60,
-      //             decoration: BoxDecoration(
-      //                 borderRadius: BorderRadius.circular(10),
-      //                 color: Color.fromARGB(255, 11, 116, 43)),
-      //             child: Center(
-      //                 child: Text("Get Started",
-      //                     style: GoogleFonts.poppins(
-      //                         fontSize: 25,
-      //                         color: Colors.white,
-      //                         fontWeight: FontWeight.w500)))),
-      //       ),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }
