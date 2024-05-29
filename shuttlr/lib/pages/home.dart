@@ -169,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 mapType: MapType.normal,
                 initialCameraPosition:
-                    CameraPosition(target: HomePage._initialLoc, zoom: 13.5),
+                    CameraPosition(target: HomePage._initialLoc, zoom: 14),
                 markers:
                     //we look at the length of myCoordinates map which holds all the current logged in drivers coordinates
                     // we bulid the markers based on that data

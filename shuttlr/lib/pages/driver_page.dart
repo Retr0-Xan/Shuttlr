@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable
+// ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_const_literals_to_create_immutables
 
 import 'dart:async';
 
@@ -43,10 +43,17 @@ class _DriverPageState extends State<DriverPage> {
   }
 
   final AuthService _auth = AuthService();
-
+  int _selectedNavBarIndex = 1;
   bool sessionStarted = false;
   LocationData? currentLocation;
   StreamSubscription<LocationData>? locationSubscription;
+
+  // void stopTracking(bool sessionStatus) async {
+  //   Location location = Location();
+
+  //   location.enableBackgroundMode(enable: false);
+  //   location.
+  // }
 
   void getCurrentLocation(bool sessionStatus) async {
     Location location = Location();
@@ -75,7 +82,47 @@ class _DriverPageState extends State<DriverPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'Create',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'History',
+          ),
+        ],
+        onTap: (value) {
+          if (value == 0) {
+            // Navigator.pushNamed(context, '/home');
+            print(value);
+            setState(() {
+              _selectedNavBarIndex = value;
+            });
+          } else if (value == 1) {
+            // Navigator.pushNamed(context, '/create');
+            print(value);
+            setState(() {
+              _selectedNavBarIndex = value;
+            });
+          } else {
+            // Navigator.pushNamed(context, '/history');
+            print(value);
+            setState(() {
+              _selectedNavBarIndex = value;
+            });
+          }
+        },
+        currentIndex: _selectedNavBarIndex,
+        selectedItemColor: Colors.green,
+      ),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Driver page'),
         actions: [
           IconButton(
