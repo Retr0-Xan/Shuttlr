@@ -22,6 +22,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final LatLng UniCampusNE = LatLng(6.688318, -1.564417);
+  final LatLng UniCampusSW = LatLng(6.666382, -1.587739);
   final AuthService _auth = AuthService();
   User? current_user = FirebaseAuth.instance.currentUser;
 
@@ -158,6 +160,13 @@ class _HomePageState extends State<HomePage> {
             // Data has been successfully fetched
             return Stack(children: [
               GoogleMap(
+                trafficEnabled: false,
+                cameraTargetBounds: CameraTargetBounds(
+                  LatLngBounds(
+                    northeast: UniCampusNE,
+                    southwest: UniCampusSW,
+                  ),
+                ),
                 mapType: MapType.normal,
                 initialCameraPosition:
                     CameraPosition(target: HomePage._initialLoc, zoom: 13.5),

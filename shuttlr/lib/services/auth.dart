@@ -14,7 +14,7 @@ class AuthService {
   Stream<User?> get user {
     return _auth
         .authStateChanges()
-        .transform(delayStreamTransformer(Duration(seconds: 1)));
+        .transform(delayStreamTransformer(Duration(seconds: 2)));
   }
 
   StreamTransformer<T, T> delayStreamTransformer<T>(Duration duration) {
