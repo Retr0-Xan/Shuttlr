@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_const_literals_to_create_immutables, prefer_final_fields
 
 import 'dart:async';
 
@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shuttlr/pages/create_session.dart';
+import 'package:shuttlr/pages/driver_history.dart';
+import 'package:shuttlr/pages/driver_home.dart';
 import 'package:shuttlr/services/auth.dart';
 import 'package:shuttlr/services/database.dart';
 
@@ -21,38 +24,9 @@ class DriverPage extends StatefulWidget {
   State<DriverPage> createState() => _DriverPageState();
 }
 
-List<Widget> bodyDriver = [
-  Center(
-    child: Text("Home Page"),
-  ),
-  Center(
-    child: Text("Create Session"),
-  ),
-  Center(
-    child: Text("History"),
-  ),
-];
-
 class _DriverPageState extends State<DriverPage> {
-  Widget? body = bodyDriver[0];
-  void getPermissions() async {
-    var status = await Permission.locationWhenInUse.status;
-    if (!status.isGranted) {
-      status = await Permission.locationWhenInUse.request();
-    }
-    if (status.isGranted) {
-      status = await Permission.locationAlways.request();
-    }
-  }
-
   Future<dynamic> updateLocation(String latitude, String longitude) async {
     await DatabaseService(uid: widget.uid).updateLocation(latitude, longitude);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getPermissions();
   }
 
   final AuthService _auth = AuthService();
@@ -94,42 +68,47 @@ class _DriverPageState extends State<DriverPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> _pages = [
+      DriverHome(),
+      CreateSession(
+        uid: widget.uid,
+      ),
+      DriverHistory(),
+    ];
     return Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(
+        bottomNavigationBar: NavigationBar(
+          destinations: [
+            NavigationDestination(
               icon: Icon(Icons.home),
               label: 'Home',
             ),
-            BottomNavigationBarItem(
+            NavigationDestination(
               icon: Icon(Icons.add),
               label: 'Create',
             ),
-            BottomNavigationBarItem(
+            NavigationDestination(
               icon: Icon(Icons.history),
               label: 'History',
             ),
           ],
-          onTap: (value) {
+          onDestinationSelected: (value) {
             if (value == 0) {
               setState(() {
-                body = bodyDriver[value];
                 _selectedNavBarIndex = value;
               });
             } else if (value == 1) {
               setState(() {
-                body = bodyDriver[value];
                 _selectedNavBarIndex = value;
               });
             } else {
               setState(() {
-                body = bodyDriver[value];
                 _selectedNavBarIndex = value;
               });
             }
           },
-          currentIndex: _selectedNavBarIndex,
-          selectedItemColor: Colors.green,
+          selectedIndex: _selectedNavBarIndex,
+          height: 70,
+          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         ),
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -145,7 +124,7 @@ class _DriverPageState extends State<DriverPage> {
                 })
           ],
         ),
-        body: body);
+        body: _pages[_selectedNavBarIndex]);
   }
 }
 

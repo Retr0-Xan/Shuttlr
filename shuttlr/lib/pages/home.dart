@@ -160,6 +160,7 @@ class _HomePageState extends State<HomePage> {
             // Data has been successfully fetched
             return Stack(children: [
               GoogleMap(
+                myLocationEnabled: true,
                 trafficEnabled: false,
                 cameraTargetBounds: CameraTargetBounds(
                   LatLngBounds(
