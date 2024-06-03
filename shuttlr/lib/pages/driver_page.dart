@@ -124,7 +124,10 @@ class _DriverPageState extends State<DriverPage> {
                 })
           ],
         ),
-        body: _pages[_selectedNavBarIndex]);
+        body: IndexedStack(
+          index: _selectedNavBarIndex,
+          children: _pages,
+        ));
   }
 }
 

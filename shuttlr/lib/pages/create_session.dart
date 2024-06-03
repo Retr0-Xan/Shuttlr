@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shuttlr/services/auth.dart';
 import 'package:shuttlr/services/database.dart';
 
 class CreateSession extends StatefulWidget {
@@ -39,8 +38,6 @@ class _CreateSessionState extends State<CreateSession> {
     getPermissions();
   }
 
-  final AuthService _auth = AuthService();
-  int _selectedNavBarIndex = 0;
   bool sessionStarted = false;
   LocationData? currentLocation;
   StreamSubscription<LocationData>? locationSubscription;
