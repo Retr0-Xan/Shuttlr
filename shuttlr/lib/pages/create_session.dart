@@ -10,6 +10,8 @@ import 'package:shuttlr/services/database.dart';
 
 class CreateSession extends StatefulWidget {
   final String? uid;
+  String route = "";
+  String dropdownValue = "Brunei";
 
   CreateSession({super.key, this.uid});
 
@@ -28,8 +30,10 @@ class _CreateSessionState extends State<CreateSession> {
     }
   }
 
-  Future<dynamic> updateLocation(String latitude, String longitude) async {
-    await DatabaseService(uid: widget.uid).updateLocation(latitude, longitude);
+  Future<dynamic> updateLocation(
+      String latitude, String longitude, String route) async {
+    await DatabaseService(uid: widget.uid)
+        .updateLocation(latitude, longitude, route);
   }
 
   @override
@@ -49,7 +53,7 @@ class _CreateSessionState extends State<CreateSession> {
   //   location.
   // }
 
-  void getCurrentLocation(bool sessionStatus) async {
+  void getCurrentLocation(bool sessionStatus, String route) async {
     Location location = Location();
     location.enableBackgroundMode(enable: true);
     location.changeSettings(accuracy: LocationAccuracy.high);
@@ -59,7 +63,8 @@ class _CreateSessionState extends State<CreateSession> {
           currentLocation = location;
           await DatabaseService(uid: widget.uid).updateLocation(
               (currentLocation!.latitude).toString(),
-              (currentLocation!.longitude).toString());
+              (currentLocation!.longitude).toString(),
+              route);
         },
       );
       // ignore: prefer_conditional_assignment
@@ -67,7 +72,7 @@ class _CreateSessionState extends State<CreateSession> {
         locationSubscription = location.onLocationChanged.listen((newLocation) {
           currentLocation = newLocation;
           updateLocation((currentLocation!.latitude).toString(),
-              (currentLocation!.longitude).toString());
+              (currentLocation!.longitude).toString(), route);
         });
       }
     }
@@ -76,23 +81,49 @@ class _CreateSessionState extends State<CreateSession> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Center(
-          child: GestureDetector(
+      body: Column(
+        children: [
+          Text(
+            "Select Route",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ),
+          DropdownButton(
+              items: const [
+                DropdownMenuItem(
+                  value: "Brunei",
+                  child: Text("Brunei - KSB"),
+                ),
+                DropdownMenuItem(
+                  value: "Commercial Area",
+                  child: Text("Commercial Area - KSB"),
+                ),
+                DropdownMenuItem(
+                  value: "Mombasa",
+                  child: Text("Mombasa"),
+                ),
+              ],
+              value: widget.dropdownValue,
+              onChanged: (String? newValue) {
+                setState(() {
+                  widget.dropdownValue = newValue!;
+                });
+              }),
+          GestureDetector(
             onTap: () {
               setState(() {
                 //this bool will help us change the state of the button and perform other functions
                 sessionStarted = !sessionStarted;
+                widget.route = widget.dropdownValue;
               });
               //start tracking and be updating updateLocation method with new data if session has been started
               if (sessionStarted == true) {
-                getCurrentLocation(sessionStarted);
+                getCurrentLocation(sessionStarted, widget.route);
               } else if (sessionStarted == false) {
                 //if session has ended remove coordinates to remove marker from map
                 locationSubscription?.cancel();
                 locationSubscription = null;
 
-                updateLocation("", "");
+                updateLocation("", "", "");
               }
             },
             child: Container(
@@ -120,7 +151,7 @@ class _CreateSessionState extends State<CreateSession> {
                               fontWeight: FontWeight.w500))),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -12,10 +12,11 @@ class DatabaseService {
   final CollectionReference locationCollection =
       FirebaseFirestore.instance.collection('locations');
 
-  Future updateLocation(String latitude, String longitude) async {
+  Future updateLocation(String latitude, String longitude,String route) async {
     return await locationCollection.doc(uid).set({
       'latitude': latitude,
       'longitude': longitude,
+      'route' : route
     });
   }
 
