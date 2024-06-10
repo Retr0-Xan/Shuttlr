@@ -75,6 +75,7 @@ class _DriverPageState extends State<DriverPage> {
       ),
       DriverHistory(),
     ];
+    //Using a stream provider to make the locations stream from DatabaseService available to all widgets under this
     return StreamProvider<QuerySnapshot?>.value(
       initialData: null,
       value: DatabaseService().locations,

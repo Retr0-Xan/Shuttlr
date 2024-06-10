@@ -13,34 +13,66 @@ class DriverHome extends StatefulWidget {
 }
 
 class _DriverHomeState extends State<DriverHome> {
+  int itemCount = 0;
+  String dataText = "";
   @override
   Widget build(BuildContext context) {
+    //using the stream provided in the parent widget(driver page) we can now access all that data
     final locations = Provider.of<QuerySnapshot?>(context)!;
-    final firstLoc = locations.docs[0].data() as Map<String, dynamic>;
+    final List<Map<String, dynamic>> validLocationData = locations.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .where((data) =>
+            data['longitude'] != "" &&
+            data['latitude'] != "" &&
+            data['route'] != "")
+        .toList();
     return Scaffold(
-        body: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: Text(
-            "Current Sessions",
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Text(
+              "Current Sessions",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        SizedBox(
-          height: 30,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 17),
-          child: Container(
-            color: Colors.green,
-            height: 130,
-            width: 320,
-            child: Center(child: Text(firstLoc['route'])),
+          SizedBox(
+            height: 30,
           ),
-        )
-      ],
-    ));
+          validLocationData.isEmpty
+              ? Center(child: Text('No drivers at this time'))
+              : Expanded(
+                  child: ListView.builder(
+                    itemCount: validLocationData.length,
+                    itemBuilder: (context, index) {
+                      final data = validLocationData[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        child: Container(
+                          color: Colors.green,
+                          height: 130,
+                          width: double.infinity,
+                          child:
+                              Center(child: Text(data['route'] ?? 'No Data')),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+        ],
+      ),
+    );
   }
 }
+
+        // Padding(
+        //   padding: const EdgeInsets.only(left: 17),
+        //   child: Container(
+        //     color: Colors.green,
+        //     height: 130,
+        //     width: 320,
+        //     child: Center(child: Text(firstLoc['route'])),
+        //   ),
+        // )
