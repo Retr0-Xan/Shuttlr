@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shuttlr/services/database.dart';
 
 class DriverHome extends StatefulWidget {
   const DriverHome({super.key});
@@ -12,6 +15,8 @@ class DriverHome extends StatefulWidget {
 class _DriverHomeState extends State<DriverHome> {
   @override
   Widget build(BuildContext context) {
+    final locations = Provider.of<QuerySnapshot?>(context);
+    final firstLoc = locations?.docs[0].data();
     return Scaffold(
         body: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,6 +37,7 @@ class _DriverHomeState extends State<DriverHome> {
             color: Colors.green,
             height: 130,
             width: 320,
+            child: Center(child: Text(firstLoc.toString())),
           ),
         )
       ],

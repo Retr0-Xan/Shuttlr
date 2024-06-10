@@ -2,8 +2,10 @@
 
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 import 'package:shuttlr/pages/create_session.dart';
 import 'package:shuttlr/pages/driver_history.dart';
 import 'package:shuttlr/pages/driver_home.dart';
@@ -73,58 +75,62 @@ class _DriverPageState extends State<DriverPage> {
       ),
       DriverHistory(),
     ];
-    return Scaffold(
-        bottomNavigationBar: NavigationBar(
-          destinations: [
-            NavigationDestination(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.add),
-              label: 'Create',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.history),
-              label: 'History',
-            ),
-          ],
-          onDestinationSelected: (value) {
-            if (value == 0) {
-              setState(() {
-                _selectedNavBarIndex = value;
-              });
-            } else if (value == 1) {
-              setState(() {
-                _selectedNavBarIndex = value;
-              });
-            } else {
-              setState(() {
-                _selectedNavBarIndex = value;
-              });
-            }
-          },
-          selectedIndex: _selectedNavBarIndex,
-          height: 70,
-          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        ),
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text('Shuttlr Driver'),
-          actions: [
-            IconButton(
-                icon: Icon(Icons.logout),
-                onPressed: () async {
-                  locationSubscription?.cancel();
-                  locationSubscription = null;
-                  updateLocation("", "","");
-                  await _auth.signOut();
-                })
-          ],
-        ),
-        body: IndexedStack(
-          index: _selectedNavBarIndex,
-          children: _pages,
-        ));
+    return StreamProvider<QuerySnapshot?>.value(
+      initialData: null,
+      value: DatabaseService().locations,
+      child: Scaffold(
+          bottomNavigationBar: NavigationBar(
+            destinations: [
+              NavigationDestination(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.add),
+                label: 'Create',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.history),
+                label: 'History',
+              ),
+            ],
+            onDestinationSelected: (value) {
+              if (value == 0) {
+                setState(() {
+                  _selectedNavBarIndex = value;
+                });
+              } else if (value == 1) {
+                setState(() {
+                  _selectedNavBarIndex = value;
+                });
+              } else {
+                setState(() {
+                  _selectedNavBarIndex = value;
+                });
+              }
+            },
+            selectedIndex: _selectedNavBarIndex,
+            height: 70,
+            labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+          ),
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: Text('Shuttlr Driver'),
+            actions: [
+              IconButton(
+                  icon: Icon(Icons.logout),
+                  onPressed: () async {
+                    locationSubscription?.cancel();
+                    locationSubscription = null;
+                    updateLocation("", "","");
+                    await _auth.signOut();
+                  })
+            ],
+          ),
+          body: IndexedStack(
+            index: _selectedNavBarIndex,
+            children: _pages,
+          )),
+    );
   }
 }
