@@ -3,7 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shuttlr/services/database.dart';
 
 class DriverHome extends StatefulWidget {
   const DriverHome({super.key});
@@ -27,6 +26,7 @@ class _DriverHomeState extends State<DriverHome> {
             data['route'] != "")
         .toList();
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -51,12 +51,38 @@ class _DriverHomeState extends State<DriverHome> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 20.0),
                         child: Container(
-                          color: Colors.green,
-                          height: 130,
-                          width: double.infinity,
-                          child:
-                              Center(child: Text(data['route'] ?? 'No Data')),
-                        ),
+                            decoration: BoxDecoration(
+                                color: Colors.white54,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 7,
+                                    spreadRadius: 5,
+                                  ),
+                                ]),
+                            height: 150,
+                            width: double.infinity,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(8, 8, 50, 8),
+                                  child: Container(
+                                    color: Colors.green,
+                                    height: 110,
+                                    width: 120,
+                                  ),
+                                ),
+                                Text(
+                                  data['route'] ?? 'No Data',
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            )),
                       );
                     },
                   ),
@@ -66,13 +92,3 @@ class _DriverHomeState extends State<DriverHome> {
     );
   }
 }
-
-        // Padding(
-        //   padding: const EdgeInsets.only(left: 17),
-        //   child: Container(
-        //     color: Colors.green,
-        //     height: 130,
-        //     width: 320,
-        //     child: Center(child: Text(firstLoc['route'])),
-        //   ),
-        // )
