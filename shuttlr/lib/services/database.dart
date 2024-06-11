@@ -12,11 +12,19 @@ class DatabaseService {
   final CollectionReference locationCollection =
       FirebaseFirestore.instance.collection('locations');
 
-  Future updateLocation(String latitude, String longitude,String route) async {
-    return await locationCollection.doc(uid).set({
-      'latitude': latitude,
-      'longitude': longitude,
-      'route' : route
+  final CollectionReference historyCollection =
+      FirebaseFirestore.instance.collection('history');
+
+  Future updateLocation(String latitude, String longitude, String route) async {
+    return await locationCollection
+        .doc(uid)
+        .set({'latitude': latitude, 'longitude': longitude, 'route': route});
+  }
+
+  Future updateHistory(String route, String timeElapsed) async {
+    return await historyCollection.doc(uid).set({
+      'route': route,
+      'time_elapsed': timeElapsed,
     });
   }
 
@@ -24,5 +32,9 @@ class DatabaseService {
   //basically the current instances of the database at a particular moment in time
   Stream<QuerySnapshot> get locations {
     return locationCollection.snapshots();
+  }
+
+  Stream<QuerySnapshot> get histories {
+    return historyCollection.snapshots();
   }
 }

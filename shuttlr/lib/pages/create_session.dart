@@ -37,6 +37,10 @@ class _CreateSessionState extends State<CreateSession> {
         .updateLocation(latitude, longitude, route);
   }
 
+  Future<dynamic> updateHistory(String route, String timeElapsed) async {
+    await DatabaseService(uid: widget.uid).updateHistory(route, timeElapsed);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -45,6 +49,8 @@ class _CreateSessionState extends State<CreateSession> {
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
   final _isHours = true;
+  String displayTime =
+      StopWatchTimer.getDisplayTime(0, hours: true, milliSecond: false);
 
   bool sessionStarted = false;
   LocationData? currentLocation;
@@ -125,6 +131,8 @@ class _CreateSessionState extends State<CreateSession> {
                 _stopWatchTimer.onExecute.add(StopWatchExecute.start);
               } else if (sessionStarted == false) {
                 _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
+                updateHistory(widget.route, displayTime);
+                _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
                 //if session has ended remove coordinates to remove marker from map
                 locationSubscription?.cancel();
                 locationSubscription = null;
@@ -162,7 +170,7 @@ class _CreateSessionState extends State<CreateSession> {
               initialData: _stopWatchTimer.rawTime.value,
               builder: ((context, snapshot) {
                 final value = snapshot.data!;
-                final displayTime = StopWatchTimer.getDisplayTime(value,
+                displayTime = StopWatchTimer.getDisplayTime(value,
                     hours: _isHours, milliSecond: false);
                 return Text(displayTime,
                     style: GoogleFonts.poppins(
