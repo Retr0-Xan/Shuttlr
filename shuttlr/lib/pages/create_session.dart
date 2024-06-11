@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shuttlr/services/database.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class CreateSession extends StatefulWidget {
   final String? uid;
@@ -41,6 +42,9 @@ class _CreateSessionState extends State<CreateSession> {
     super.initState();
     getPermissions();
   }
+
+  final StopWatchTimer _stopWatchTimer = StopWatchTimer();
+  final _isHours = true;
 
   bool sessionStarted = false;
   LocationData? currentLocation;
@@ -118,7 +122,9 @@ class _CreateSessionState extends State<CreateSession> {
               //start tracking and be updating updateLocation method with new data if session has been started
               if (sessionStarted == true) {
                 getCurrentLocation(sessionStarted, widget.route);
+                _stopWatchTimer.onExecute.add(StopWatchExecute.start);
               } else if (sessionStarted == false) {
+                _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
                 //if session has ended remove coordinates to remove marker from map
                 locationSubscription?.cancel();
                 locationSubscription = null;
@@ -151,6 +157,19 @@ class _CreateSessionState extends State<CreateSession> {
                               fontWeight: FontWeight.w500))),
             ),
           ),
+          StreamBuilder<int>(
+              stream: _stopWatchTimer.rawTime,
+              initialData: _stopWatchTimer.rawTime.value,
+              builder: ((context, snapshot) {
+                final value = snapshot.data!;
+                final displayTime = StopWatchTimer.getDisplayTime(value,
+                    hours: _isHours, milliSecond: false);
+                return Text(displayTime,
+                    style: GoogleFonts.poppins(
+                        fontSize: 30,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500));
+              }))
         ],
       ),
     );
