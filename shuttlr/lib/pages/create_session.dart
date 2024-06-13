@@ -31,10 +31,10 @@ class _CreateSessionState extends State<CreateSession> {
     }
   }
 
-  Future<dynamic> updateLocation(
-      String latitude, String longitude, String route) async {
+  Future<dynamic> updateLocation(String latitude, String longitude,
+      String route, String displayTime) async {
     await DatabaseService(uid: widget.uid)
-        .updateLocation(latitude, longitude, route);
+        .updateLocation(latitude, longitude, route, displayTime);
   }
 
   Future<dynamic> updateHistory(String route, String timeElapsed) async {
@@ -47,6 +47,13 @@ class _CreateSessionState extends State<CreateSession> {
     getPermissions();
   }
 
+  @override
+  void dispose() {
+    // Dispose the StopWatchTimer to free resources
+    locationSubscription?.cancel();
+    super.dispose();
+  }
+
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
   final _isHours = true;
   String displayTime =
@@ -55,13 +62,6 @@ class _CreateSessionState extends State<CreateSession> {
   bool sessionStarted = false;
   LocationData? currentLocation;
   StreamSubscription<LocationData>? locationSubscription;
-
-  // void stopTracking(bool sessionStatus) async {
-  //   Location location = Location();
-
-  //   location.enableBackgroundMode(enable: false);
-  //   location.
-  // }
 
   void getCurrentLocation(bool sessionStatus, String route) async {
     Location location = Location();
@@ -74,7 +74,8 @@ class _CreateSessionState extends State<CreateSession> {
           await DatabaseService(uid: widget.uid).updateLocation(
               (currentLocation!.latitude).toString(),
               (currentLocation!.longitude).toString(),
-              route);
+              route,
+              displayTime);
         },
       );
       // ignore: prefer_conditional_assignment
@@ -82,7 +83,7 @@ class _CreateSessionState extends State<CreateSession> {
         locationSubscription = location.onLocationChanged.listen((newLocation) {
           currentLocation = newLocation;
           updateLocation((currentLocation!.latitude).toString(),
-              (currentLocation!.longitude).toString(), route);
+              (currentLocation!.longitude).toString(), route, displayTime);
         });
       }
     }
@@ -137,7 +138,7 @@ class _CreateSessionState extends State<CreateSession> {
                 locationSubscription?.cancel();
                 locationSubscription = null;
 
-                updateLocation("", "", "");
+                updateLocation("", "", "", "");
               }
             },
             child: Container(

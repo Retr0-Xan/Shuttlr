@@ -25,8 +25,10 @@ class DriverPage extends StatefulWidget {
 }
 
 class _DriverPageState extends State<DriverPage> {
-  Future<dynamic> updateLocation(String latitude, String longitude,String route) async {
-    await DatabaseService(uid: widget.uid).updateLocation(latitude, longitude,route);
+  Future<dynamic> updateLocation(
+      String latitude, String longitude, String route) async {
+    await DatabaseService(uid: widget.uid)
+        .updateLocation(latitude, longitude, route, "");
   }
 
   final AuthService _auth = AuthService();
@@ -34,13 +36,6 @@ class _DriverPageState extends State<DriverPage> {
   bool sessionStarted = false;
   LocationData? currentLocation;
   StreamSubscription<LocationData>? locationSubscription;
-
-  // void stopTracking(bool sessionStatus) async {
-  //   Location location = Location();
-
-  //   location.enableBackgroundMode(enable: false);
-  //   location.
-  // }
 
   void getCurrentLocation(bool sessionStatus) async {
     Location location = Location();
@@ -52,7 +47,9 @@ class _DriverPageState extends State<DriverPage> {
           currentLocation = location;
           await DatabaseService(uid: widget.uid).updateLocation(
               (currentLocation!.latitude).toString(),
-              (currentLocation!.longitude).toString(),"");
+              (currentLocation!.longitude).toString(),
+              "",
+              "");
         },
       );
       // ignore: prefer_conditional_assignment
@@ -60,7 +57,7 @@ class _DriverPageState extends State<DriverPage> {
         locationSubscription = location.onLocationChanged.listen((newLocation) {
           currentLocation = newLocation;
           updateLocation((currentLocation!.latitude).toString(),
-              (currentLocation!.longitude).toString(),"");
+              (currentLocation!.longitude).toString(), "");
         });
       }
     }
@@ -123,7 +120,7 @@ class _DriverPageState extends State<DriverPage> {
                   onPressed: () async {
                     locationSubscription?.cancel();
                     locationSubscription = null;
-                    updateLocation("", "","");
+                    updateLocation("", "", "");
                     await _auth.signOut();
                   })
             ],

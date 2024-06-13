@@ -18,12 +18,14 @@ class _DriverHomeState extends State<DriverHome> {
   Widget build(BuildContext context) {
     //using the stream provided in the parent widget(driver page) we can now access all that data
     final locations = Provider.of<QuerySnapshot?>(context)!;
+    final histories = Provider.of<QuerySnapshot?>(context)!;
     final List<Map<String, dynamic>> validLocationData = locations.docs
         .map((doc) => doc.data() as Map<String, dynamic>)
         .where((data) =>
             data['longitude'] != "" &&
             data['latitude'] != "" &&
-            data['route'] != "")
+            data['route'] != "" &&
+            data['time_elapsed'] != "")
         .toList();
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -75,11 +77,16 @@ class _DriverHomeState extends State<DriverHome> {
                                     width: 120,
                                   ),
                                 ),
-                                Text(
-                                  data['route'] ?? 'No Data',
-                                  style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold),
+                                Column(
+                                  children: [
+                                    Text(
+                                      data['route'] ?? 'No Data',
+                                      style: TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(data['time_elapsed'] ?? 'No Data'),
+                                  ],
                                 ),
                               ],
                             )),

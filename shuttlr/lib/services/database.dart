@@ -15,10 +15,14 @@ class DatabaseService {
   final CollectionReference historyCollection =
       FirebaseFirestore.instance.collection('history');
 
-  Future updateLocation(String latitude, String longitude, String route) async {
-    return await locationCollection
-        .doc(uid)
-        .set({'latitude': latitude, 'longitude': longitude, 'route': route});
+  Future updateLocation(
+      String latitude, String longitude, String route, String time) async {
+    return await locationCollection.doc(uid).set({
+      'latitude': latitude,
+      'longitude': longitude,
+      'route': route,
+      'time_elapsed': time
+    });
   }
 
   Future updateHistory(String route, String timeElapsed) async {
